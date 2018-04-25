@@ -8,62 +8,57 @@
 
 
 
-function createthumb($name,$filename,$new_w,$new_h,$type){
+function createThumb($name,$target, $thumb_width, $thumb_height, $type, $newtype = null) {
+	switch($type){
+		case 'image/jpg':
+		case 'image/jpeg':
+			$src_img=imagecreatefromjpeg($name); $type = "jpg";
+		break;
+		
+		case 'image/gif':
+			$src_img=imagecreatefromgif($name); $type = "gif";
+		break;
+		
+		case 'image/png':
+			$src_img=imagecreatefrompng($name); $type = "png";
+		break;
+	}
+	if($newtype == NULL) $newtype = $type;
+	$filename = 'output.jpg';
+	$width = imagesx($src_img);
+	$height = imagesy($src_img);
+	$original_aspect = $width / $height;
+	$thumb_aspect = $thumb_width / $thumb_height;
+	if ( $original_aspect >= $thumb_aspect )
+	{
+	   // If image is wider than thumbnail (in aspect ratio sense)
+	   $new_height = $thumb_height;
+	   $new_width = $width / ($height / $thumb_height);
+	}
+	else
+	{
+	   // If the thumbnail is wider than the image
+	   $new_width = $thumb_width;
+	   $new_height = $height / ($width / $thumb_width);
+	}
+	$thumb = imagecreatetruecolor( $thumb_width, $thumb_height );
+	// Resize and crop
+	imagecopyresampled($thumb,
+					   $src_img,
+					   0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
+					   0 - ($new_height - $thumb_height) / 2, // Center the image vertically
+					   0, 0,
+					   $new_width, $new_height,
+					   $width, $height);
+					   
+	switch($newtype){
+		case 'jpg': imagejpeg($thumb,$target);  break;
+		case 'gif': imagegif($thumb,$target);  break;
+		case 'png': imagepng($thumb,$target); break;
+	} 
 
-    switch($type){
-        case 'image/jpg':
-        case 'image/jpeg':
-            $src_img=imagecreatefromjpeg($name); $type = "jpg";
-            break;
-
-        case 'image/gif':
-            $src_img=imagecreatefromgif($name); $type = "gif";
-            break;
-
-        case 'image/png':
-            $src_img=imagecreatefrompng($name); $type = "png";
-            break;
-    }
-
-    //size of src image
-    $orig_w = imagesx($src_img);
-    $orig_h = imagesy($src_img);
-
-
-    $w_ratio = ($new_w / $orig_w);
-    $h_ratio = ($new_h / $orig_h);
-
-    if ($orig_w > $orig_h ) {//landscape
-        $crop_w = round($orig_w * $h_ratio);
-        $crop_h = $new_h;
-        $src_x = ceil( ( $orig_w - $orig_h ) / 2 );
-        $src_y = 0;
-    } elseif ($orig_w < $orig_h ) {//portrait
-        $crop_h = round($orig_h * $w_ratio);
-        $crop_w = $new_w;
-        $src_x = 0;
-        $src_y = ceil( ( $orig_h - $orig_w ) / 2 );
-    } else {//square
-        $crop_w = $new_w;
-        $crop_h = $new_h;
-        $src_x = 0;
-        $src_y = 0;
-    }
-    $dest_img = imagecreatetruecolor($new_w,$new_h);
-    imagesavealpha($dest_img, true);
-    $alpha = imagecolorallocatealpha($dest_img, 0, 0, 0, 127);
-    imagefill($dest_img, 0, 0, $alpha);
-
-    imagecopyresampled($dest_img, $src_img, 0 , 0 , $src_x, $src_y, $crop_w, $crop_h, $orig_w, $orig_h);
-
-    switch($type){
-        case 'jpg': imagejpeg($dest_img,$filename);  break;
-        case 'gif': imagegif($dest_img,$filename);  break;
-        case 'png': imagepng($dest_img,$filename); break;
-    }
-
-    imagedestroy($dest_img);
-    imagedestroy($src_img);
+	imagedestroy($thumb); 
+	imagedestroy($src_img); 
 }
 
 const GFXDIR = 'gfx/galleries/';
