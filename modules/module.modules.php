@@ -38,12 +38,17 @@
 	}
 
 
+    function install() {
+        return;
+    }
+
 
     function items() {
         return $this->modules();
     }
 	
-	function modules() {
+	function modules() {		
+        $this->cache();
 		$modules = scandir(CLASS_FOLDER);
 		unset($modules[0]);
 		unset($modules[1]);
@@ -56,6 +61,8 @@
             ];
             $modules[$k] = $row;
 		}
+		
+        $this->cache($modules);
 		return $modules;
 	}
 
@@ -67,11 +74,10 @@
      * @return int
      */
 	function status($module = null, $status = null)    {
-        $this->cache();
         $row = $this->find('name',$module);
-        if($row){
+        if($row){ 
            if ($status !== null) {
-               $row['status'] = $status;
+               $row['status'] = $status; 
                $this->set($row['id'], $row);
            }
            if(isset($row['status'])) return (int)$row['status'];
@@ -83,10 +89,12 @@
      * Get request handler to change status
      * @return int
      */
-    function changestatus() {
-        $status = get('status');
-        $module = id();
-        $res = $this->status($module,$status);
+    function changestatus() { 
+        $this->cache();
+        $this->parse = FALSE;
+        $status = path(3);
+        $module = id(); 
+        $res = $this->status($module,$status); 
         if($res == 1) {
             M($module)->install();
         }

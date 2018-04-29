@@ -463,13 +463,15 @@ function trimslashes($path) {
 
 
 function dbempty() {
-    nodbquery("DROP DATABASE IF EXISTS " . HOST_DB);
-    nodbquery("CREATE DATABASE " . HOST_DB);
+    dbquery("DROP DATABASE IF EXISTS " . HOST_DB);
+    dbquery("CREATE DATABASE " . HOST_DB);
 }
 
 
-function dbbackup() { return;
-    $now = strtotime("now"); //var_dump(G('db_lastbackup'));
+function dbbackup() { 	
+	if((int)G('db_backup_frequency') == 0) return;
+	
+    $now = strtotime("now"); 
     if(empty(G('db_lastbackup'))) {
         $updateTime = 0;
     } else {

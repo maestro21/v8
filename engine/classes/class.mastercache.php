@@ -228,14 +228,17 @@ abstract class mastercache {
      * set and save element
      */
     public function set($key, $row) {
-        $data = $this->cache();
-        $data[$key] = $row;
-        $this->cache($data);
+        if(empty($this->data)) {
+            $this->cache();
+        }
+        $this->data[$key] = $row; 
+        $this->cache($this->data);
     }
 
     public function get($key) {
-        $data = $this->cache();
-        if($data[$key]) return $data[$key];
+        $this->cache();
+        if($this->data[$key]) return $this->data[$key];
+        return NULL;
     }
 
     public function find($k,$v) {
@@ -340,6 +343,8 @@ abstract class mastercache {
     }
 
     public function clear() {
+        $this->data = [];
+        $this->ai = 0;
         cacherm($this->cl(), $this->json());
     }
     /*
@@ -359,14 +364,14 @@ abstract class mastercache {
             $data = [
                 'ai' => $this->ai,
                 'data' => $data,
-            ];
+            ]; 
             cache($name, $data, $this->json, $this->cachepath);
         }
         // load
         $data =  cache($name, null, $this->json, $this->cachepath);
         if(!isset($data['ai'])) {
             $data = [
-                'ai' => max(array_keys($data)),
+                'ai' => @max(array_keys($data)),
                 'data' => $data,
             ];
             cache($name, $data, $this->json, $this->cachepath);

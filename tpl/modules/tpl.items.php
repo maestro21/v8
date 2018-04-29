@@ -38,9 +38,9 @@ $statustexts = ['not installed','installed','activated'];
 <script>
 
 function changestatus(module, status_id) {
-	$.get('<?php echo BASE_URL;?>modules/changestatus/' + module + '?ajax=1&status=' + status_id)
+	$.get('<?php echo BASE_URL;?>modules/changestatus/' + module + '/' + status_id)
 		.done(function() {
-			//window.location.reload(0);
+			window.location.reload(0);
 	});
 }
 

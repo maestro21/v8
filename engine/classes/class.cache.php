@@ -59,7 +59,7 @@ class cache {
     
     public function del($key) {
         unset($this->cache[$key]);
-        $filename = BASE_PATH . $key; echo $filename;
+        $filename = BASE_PATH . $key; 
         if(file_exists($filename)) {
             unlink($filename);
         }
@@ -70,14 +70,14 @@ class cache {
 
 
 /** Cache getter\setter **/
-function cache($name, $data = NULL, $json = false, $cachepath = 'data/cache/', $returndata = true) {
+function cache($name, $data = NULL, $json = false, $cachepath = 'data/cache/', $returndata = true) {  
 	$key =  $cachepath . $name . ($json ? '.json' : '.php');
-    $cache = cache::getInstance();
-	if(NULL !== $data) {
+    $cache = cache::getInstance(); 
+	if(NULL !== $data) { 
         $cache->set($key, $data);
 	}
     $data = $cache->get($key);
-    if(isset($data['data']) && $returndata) $data= $data['data'];
+    if(isset($data['data']) && $returndata) $data = $data['data'];
     return $data;
 }
 
