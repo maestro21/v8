@@ -35,6 +35,7 @@ class i18n extends masterdb {
 	function del($data = NULL) {}
 	function add($data = NULL) {}
 	function edit($data = NULL) {}
+	function view($data = NULL) {}
 	
 	/**
 		Admin method for class data listing

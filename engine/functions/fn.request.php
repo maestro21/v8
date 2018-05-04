@@ -13,8 +13,9 @@ function get($key,$default = NULL) {
     return $default;
 }
 
-function post($key,$default = NULL) {
+function post($key = null, $default = NULL) {
     global $_POST;
+    if($key == null) return $_POST;
     if(isset($_POST[$key])) return $_POST[$key];
     return $default;
 }

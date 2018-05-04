@@ -1,7 +1,7 @@
 <?php
 if(!isset($prefix)) $prefix = 'form';
 if(!isset($plain)) $plain = false;
-if(!isset($table)) $table = false;
+if(!isset($table)) $table = true;
 if($plain) { ?>
 	<div class='tr'<?php if(isset($rowid)) echo " data-rowid='" . $rowid . "'";?>>
 <?php }
@@ -12,7 +12,7 @@ foreach($fields as $key => $field) {
 	$name = (isset($field['name']) ? $field['name'] : $key);
 	$widget = $field[0];
 	$class = (isset($field['class']) ? ' ' . $field['class'] : '');
-	$value = (isset($data[$key]) ? $data[$key] : (isset($field['default'])? $field['default'] : ""));
+	$value = (isset($data[$key]) ? $data[$key] : (isset($field['default'])? $field['default'] : "")); 
 	$required = (@$field['required'] > 0);
 	$uid = arr2line($prefix) . '-'. $key;
 
@@ -424,24 +424,15 @@ foreach($fields as $key => $field) {
 
 			<?php break;
 
-
-			case WIDGET_DATETIME:
-				preg_match_all("/[[:digit:]]{2,4}/", $value, $matches);
-				$nums = $matches[0]; ?>
-				<input type="text" class="date year" name="<?php echo $prefix;?>[<?php echo $key;?>][y]"
-					value="<?php echo (isset($nums[0])?$nums[0]:date("Y"));?>" size="4">-
-				<select name="<?php echo $prefix;?>[<?php echo $key;?>][m]>">
-					<?php if(!isset($nums[1])) $nums[1] = date("m");
-					for($i=1;$i<13;$i++) { ?>
-						<option value="<?php echo $i;;?>"<?php if($i==@$nums[1]) echo ' selected="selected"';?>><?php echo T("mon_$i");?>
-					</option>
-					<?php } ?>
-				</select>
-				<input type="text" class="date" name=<?php echo $prefix;?>[<?php echo $key;?>][d] value="<?php echo (isset($nums[2])?$nums[2]:date("d"));?>" size=2> (YYYY-MM-DD) &nbsp&nbsp&nbsp
-				<input type="text" class="date" name=<?php echo $prefix;?>[<?php echo $key;?>][h] value="<?php echo (isset($nums[3])?$nums[3]:date("G"));?>" size=2>:
-				<input type="text" class="date" name=<?php echo $prefix;?>[<?php echo $key;?>][mi] value="<?php echo (isset($nums[4])?$nums[4]:date("i"));?>" size=2>:
-				<input type="text" class="date" name=<?php echo $prefix;?>[<?php echo $key;?>][s] value="<?php echo (isset($nums[5])?$nums[5]:date("s"));?>" size=2>(HH:MM:SS)
-
+			case WIDGET_DATETIME: ?>
+			<div class="form-group">
+                <div class="input-group datetime" id="<?php echo $uid;?>" data-target-input="nearest">
+                    <input type="text" name=<?php echo $prefix;?>[<?php echo $key;?>] value="<?php echo $value;?>" class="form-control datetimepicker-input" data-target="#<?php echo $uid;?>"/>
+                    <div class="input-group-append" data-target="#<?php echo $uid;?>" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
 			<?php break;
 
 			case WIDGET_CHECKBOXES:

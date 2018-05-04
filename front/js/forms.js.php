@@ -11,7 +11,7 @@ $( document ).ready(function() {
 		return this.optional(element) || /^[-a-z0-9]*$/im.test(value);
 	}, "<?php echo T('error_slug'); ?>");	
 	$.validator.addClassRules('slug', { slug: true });
-/*
+
 	$('form').each(function(e) {
 		var $this = $(this);
 		var $id = $(this).attr('id');
@@ -31,15 +31,39 @@ $( document ).ready(function() {
             }
         });
 	});
-*/
+
 	/*
-	$("#form").submit(function(e){ saveFn(); return false; });
-	$('.submit').click(function() { saveForm(); });	
-	function saveFn(){ saveForm(); }*/
-	
-	
+	$("#form").submit(function(e){ sendForm(); return false; });
+	$('.submit').click(function(e) {  sendForm(); return false; });	
+	function saveFn(){ saveForm(); } */
+
+	$('.tabMenu div').click(function() { 
+		tab($(this).data('id'));
+	});
+	tab(1);
+
+	/* Datetime picker */
+	$('.date').datetimepicker({
+    	pickTime: false
+    });
+    $('.time').datetimepicker({
+    	pickDate: false
+    });
+    $('.datetime').datetimepicker({ 
+    	locale: 'ru',
+    	format: 'YYYY.MM.DD hh:mm'
+    });
 	
 });
+
+
+function tab(i) {
+	$('body').addClass('test');
+	$('.tabMenu div').removeClass();
+	$('.tabMenu div[data-id=' + i + ']').addClass('active');
+	$('.tabs .tab').hide();
+	$('.tabs .tab[data-id=' + i + ']').show();
+}
 
 function sendForm(form,path) {
     if(form == null) return;

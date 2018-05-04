@@ -4,26 +4,57 @@
 		$this->description = 'Core module for setting up global settings';
 	}
 
+	public $fields;
+
 	function fields() {
-        return [
-            'name' 		=> [ WIDGET_TEXT ],
-            'value' 	=> [ WIDGET_TEXT ],
-        ];
+        return cache('settings');
     }
 
 	
 	function install() {
-		include('data/default.globals.php'); 
-		foreach($globals as $k => $v) {
-			$item = array(
-				'name'		=> $k,
-				'value'		=> $v,
-			);
-			$this->push($item);
-		}
+		$this->settings('general',[
+			'sitename' => [ WIDGET_TEXT, 'default' => 'Maestro Engine v8'],
+			'description' => [ WIDGET_TEXTAREA, 'default' => 'Website powered by Maestro Engine v8'],
+			'theme' => [ WIDGET_TEXT, 'default' => 'maestro'], //TODO : select
+			'defmodule' => [ WIDGET_TEXT, 'default' => 'pages'],
+			'deflang' => [ WIDGET_TEXT, 'default' => 'en'],
+		]);
+		$this->settings('db_backup', [
+			'db_last_backup' => [ WIDGET_TIME, 'default' => NULL],
+			'db_backup_frequency' => [ WIDGET_TEXT, 'default' => '+1 day'],
+		]);
 	}
 
 	
+	function cache($data = NULL, $name = "settings_data") {
+		return cache($name, $data);
+	}
+
+
+	function items() {
+		return;
+	}
+
+
+	public $settings = null;
+	function settings($key = null, $data = null) {		
+		if($this->settings == null) {
+			$this->settings = cache('settings');
+		}
+		if($data != null) {
+			$this->settings[$key] = $data;
+			cache('settings', $this->settings);
+		}
+		return $this->settings;
+	}
+
+	function save($row = null) { 
+		$data = post('form'); 
+		$this->cache($data);
+		die();
+	}
+
+
 	function login() { 
 		if(superAdmin()) redirect(BASE_URL);
 	
@@ -46,12 +77,7 @@
 	 * return globals
 	 */
 	function globals() {
-		$ret = [];
-		$data = $this->cache();
-		foreach($data as $row) {
-			$ret[$row['name']] = $row['value'];
-		}
-		return $ret;
+		return $this->cache();
 	}	
 
 }

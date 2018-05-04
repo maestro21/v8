@@ -142,3 +142,20 @@ textarea.list {
     margin: 0;
     padding: 0;
 }
+
+
+.tabMenu div{
+    display:inline-flex;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1.1em;
+}
+
+.tabMenu div.active{
+    background-color:white;
+    color: black;
+}
+
+.tabs .tab{
+    display: none;
+}

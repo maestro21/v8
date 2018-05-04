@@ -1,6 +1,6 @@
 <?php 
 
-class langs extends masterdb {
+class langs extends mastercache {
 	
 	
 	function tables() {
@@ -16,8 +16,8 @@ class langs extends masterdb {
 	
 	function fields() {
 		return [
-			'abbr' => [ WIDGET_STRING, 'search' => TRUE],
-			'name' => [	WIDGET_STRING, 'null' => TRUE ]	,
+			'abbr' => [ WIDGET_TEXT, 'search' => TRUE],
+			'name' => [	WIDGET_TEXT, 'null' => TRUE ]	,
 			'website' => [WIDGET_URL,  'null' => TRUE ],
 			'active' => [ WIDGET_CHECKBOX, 'null' => TRUE],
 		];

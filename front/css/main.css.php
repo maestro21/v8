@@ -10,7 +10,8 @@ h1,h2,h3,h4,h5,h6 {
 
 h1,h2,h3,h4,h5,h6,
 .footer a, .header a {
-	font-family: 'PT Serif';
+	font-family: 'Roboto';
+	font-weight: 300;
 }
 
 .fa {
