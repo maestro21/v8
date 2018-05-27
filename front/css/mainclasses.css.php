@@ -158,51 +158,6 @@ table input.date.year {
 
 /* buttons */
 
-.btn {
-	display:inline-block;
-	cursor:pointer;
-	color:black;
-	text-decoration:none;
-	/*font-weight:bold; */
-	border-radius: 3px;
-	border: 1px <?php echo $mainColor2; ?> solid;	
-	background-color:<?php echo $mainColor2; ?>;
-	color:<?php echo $bgColor; ?>;
-	text-align: center;
-}
-
-.btn:hover {
-	color:<?php echo $mainColor2; ?> !important;
-	background-color:<?php echo $bgColor; ?>;
-}
-
-.btn-active {
-	background-color:blue;
-	color:white;
-}
-.btn-active:hover {
-	color: blue;
-	border-color: blue;
-}
-
-.btn-ok {
-	background-color:green;
-	color:white;
-}
-.btn-ok:hover {
-	color: green;
-	border-color: green;
-}
-
-.btn-del {
-	border-color: darkred;
-	background-color:darkred;
-	color:white;
-}
-.btn-del:hover {
-	border-color: darkred;
-	color: darkred;
-}
 
 
 

@@ -3,7 +3,7 @@
 <form method="POST" id="form" class="content" action="<?php echo BASE_URL . $class;?>/save?ajax=1">
 <input type="hidden" name="id" id="id" value="<?php echo $id;?>">
 	<table cellpadding=0 cellspacing=0>
-	<?php
+	<?php print_r($data);
 		echo form($data);
 	?>
 		<tr>

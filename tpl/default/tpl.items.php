@@ -13,21 +13,22 @@
 		<td><?php echo T('options');?></td>
 	</tr>
 	</thead>
-	<?php  foreach (@$data as $row){
-		if($row['id']) {
-		$id = $row['id']; unset($row['id']); ?>
+	<?php foreach (@$data as $id => $row){
+		if(isset($row['id'])) {
+			$id = $row['id']; unset($row['id']); 
+		}?>
 		<tr>
 		<td>
 			<a href="<?php echo BASE_URL.$class;?>/view/<?php echo $id;?>" target="_blank">#<?php echo $id;?></a>
 		</td>
 		<?php
 		foreach($fields as $k => $field){
-			echo "<td>".fType($field, $row[$k])."</td>";
+			echo "<td>".fType($field, @$row[$k])."</td>";
 		}?>
 		<td width=150>
 			<a href="<?php echo BASE_URL.$class;?>/edit/<?php echo $id;?>" target="_blank" class="fa-pencil fa icon icon_sml"></a>
 			<a href="javascript:void(0)" onclick="conf('<?php echo BASE_URL.$class;?>/del/<?php echo $id;?>', '<?php echo T('del conf');?>')" class="fa-trash-o fa icon icon_sml"></a>	
 		</td>
 		</tr>		
-	<?php } } ?>
+	<?php }  ?>
 </table>

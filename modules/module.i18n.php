@@ -1,5 +1,5 @@
 <?php
-class i18n extends masterdb {
+class i18n extends mastercache {
 
 	function gettables() {}
 

@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(!isset($script)) $script = true;
 if(!isset($prefix)) $prefix = 'form';
 if(!isset($plain)) $plain = false;
 if(!isset($table)) $table = true;
@@ -28,14 +29,34 @@ foreach($fields as $key => $field) {
 		<?php
 			switch ($widget) {
 
-				case WIDGET_TAB: ?>
-					<div class="widget_tab widget_tab_<?php echo $key;?>">
-						<input type="hidden" class="widget_tab_choise_<?php echo $key;?>" name="<?php echo $prefix;?>[<?php echo $key;?>]">
-						<?php foreach($options[$key] as $option) { ?>
-							<a href="javascript:;" onclick="widgetTabSelect('<?php echo $key;?>','<?php echo $option;?>');"><?php echo $option;?></a>
-						<?php } ?>
+				case WIDGET_TABS: ?>
+					<ul class="nav nav-tabs">
+						<?php $first = true; foreach($field['children'] as $tabname => $child) { ?>
+						<li class="nav-item">
+							<a class="nav-link<?php if($first) echo ' active';?>" 
+								id="tab_<?php echo $tabname;?>"
+								href="#tabpane_<?php echo $tabname;?>"
+								data-toggle="tab"  
+								aria-controls="tabpane_<?php echo $tabname;?>" 
+								aria-selected="<?php if($first) echo 'true'; else echo 'false';?>">
+								<?php echo T($tabname);?>										
+							</a>
+						</li>
+						<?php $first=false; } ?>
+					</ul>
+					<div class="tab-content">
+						<?php $first = true; foreach($field['children'] as $tabname => $child) {  ?>
+						<div id="tabpane_<?php echo $tabname;?>" 
+							class="tab-pane<?php if($first){ $first = false; echo ' active'; } ?>"
+							role="tabpanel" aria-labelledby="tabpane_<?php echo $tabname;?>">
+							<?php echo form([
+								'fields' => $child,
+								'data' => $value,
+								'script' => false,
+							]); ?>
+					  	</div>					  	
+						<?php $first=false;  } ?>
 					</div>
-					<script>setTimeout(function(){ widgetTabSelect('<?php echo $key;?>','<?php echo $value;?>');}, 100);</script>
 					<?php
 				break;
 
@@ -465,43 +486,3 @@ if($plain) { ?>
 	</div>
 </div>
 <?php } elseif($table) { echo "</table>"; }   ?>
-
-
-
-<script>
-	tinymce.init({ 
-		selector:'textarea.html',
-		menu: {},
-		plugins: [
-			'link lists image media table hr searchreplace visualblocks visualchars code fullscreen charmap insertdatetime template textcolor colorpicker alphamanager'
-		],
-		
-		toolbar: 'html undo redo |  bold italic underline strikethrough | styleselect forecolor backcolor removeformat  | alignleft aligncenter alignright alignjustify | bullist numlist | table hr | insert link image media ',
-	
-		setup: function (editor) {
-			editor.addButton('html', {
-				text: 'html',
-				icon: false,
-				onclick: function () {
-					//var $ = tinymce.dom.DomQuery;
-					var myTextarea = $('#' + editor.id);
-					var myIframe = $(editor.iframeElement);
-				
-					myIframe.toggleClass("hidden");
-					myTextarea.toggleClass("visible");
-					if ($('iframe.hidden').length > 0) {
-					  myTextarea.prependTo(".mce-edit-area");
-					  myTextarea.html(editor.getContent({
-					  source_view: true
-					}));
-					} else {
-						editor.setContent(myTextarea.val());
-						myTextarea.appendTo('body');
-					}
-				}
-			});
-	  },	
-	});
-
-
-</script>

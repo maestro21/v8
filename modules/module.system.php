@@ -1,17 +1,19 @@
-<?php class system extends mastercache  {
+<?php class system extends basecache  {
 
 	function extend() {
 		$this->description = 'Core module for setting up global settings';
 	}
 
-	public $fields;
+	public $fields = null;
 
 	function fields() {
-        return cache('settings');
+		if($this->fields == null) $this->fields = cache('settings');
+		return $this->fields;
     }
 
 	
 	function install() {
+		cache('settings', [ 'settings' => [ WIDGET_TABS, 'table' => false, 'children' => [], ], ]);
 		$this->settings('general',[
 			'sitename' => [ WIDGET_TEXT, 'default' => 'Maestro Engine v8'],
 			'description' => [ WIDGET_TEXTAREA, 'default' => 'Website powered by Maestro Engine v8'],
@@ -25,33 +27,25 @@
 		]);
 	}
 
-	
-	function cache($data = NULL, $name = "settings_data") {
-		return cache($name, $data);
-	}
-
-
-	function items() {
-		return;
-	}
-
-
-	public $settings = null;
 	function settings($key = null, $data = null) {		
-		if($this->settings == null) {
-			$this->settings = cache('settings');
+		if($this->fields == null) {
+			$this->fields = cache('settings');
 		}
 		if($data != null) {
-			$this->settings[$key] = $data;
-			cache('settings', $this->settings);
+			$this->fields['settings']['children'][$key] =  $data;
+			cache('settings', $this->fields);
 		}
-		return $this->settings;
+		return $this->fields;
 	}
 
 	function save($row = null) { 
+		$this->parse = P_JSON;
 		$data = post('form'); 
-		$this->cache($data);
-		die();
+		$this->cache($data, "settings_data");
+		return [
+			'message' => T('saved'), 
+			'status' => 'ok'
+		];	
 	}
 
 

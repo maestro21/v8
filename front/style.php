@@ -40,7 +40,7 @@ if($rebuild) {
 
 	
 	/* theme */
-	$tp = '../' . tpath() . 'style.php';  
+	$tp = '../' . tpath() . 'style.css.php';  
 	if(file_exists($tp)){
 		include($tp);
 	}

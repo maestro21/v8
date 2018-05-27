@@ -33,9 +33,6 @@
 	display:table-cell;
 	vertical-align:middle;
 }
-.wrap-modules div  div .btn {
-	width:70px;
-}
 .wrap-modules .info {
 	width: 630px;
 	padding:10px;

@@ -34,7 +34,7 @@ function mtpl($name, $data = null) {
 
     return $content;
 }
-function form($data) {
+function form($data) { 
     return tpl('form', $data);
 }
 
@@ -230,7 +230,7 @@ function btns($buttons, $cl = '',  $params = array()) {
             if (0 === strpos($text, 'fa-')) {
                 $html .= "<a href='$url' class='fa $text icon'></a>";
             } else {
-                $html .= "<a href='$url' class='btn'>" . T($text) . "</a>";
+                $html .= "<a href='$url' class='btn btn-primary'>" . T($text) . "</a>";
             }
         }
     }

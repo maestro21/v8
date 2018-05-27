@@ -35,7 +35,7 @@ $_WIDGETS = [
     'COORDS',
     'COLOR',
     'CHAR',
-    'TAB',
+    'TABS',
     'BTN',
     'PLAINCODE',
 ];
@@ -375,6 +375,27 @@ function strToKeyValues($data) {
         $return[$key] = $value;
     }
     return $return;
+}
+
+
+/**
+ *  Saves array data by key
+ *  Input array [ 0 => [ 'key' => 'test', 'value1'=> 'testvalue']]
+ *  Output: [ 'test' =>  [ 'key' => 'test', 'value1'=> 'testvalue']]
+ */
+function saveByKey($arr, $key) {
+    if(empty($arr)) return false;
+    if(empty($key)) return false;
+    if(!is_array($arr)) return false;
+
+    $data = array();
+    $langs = getLangs();
+    foreach($arr as $row) {
+        if(!isset($row[$key])) return $data;
+        $data[$row[$key]] = $row;
+    }   
+    ksort($data, SORT_FLAG_CASE);
+    return $data;
 }
 
 function strToList($data, $divider = PHP_EOL) {
