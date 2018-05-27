@@ -54,6 +54,7 @@ $( document ).ready(function() {
     	format: 'YYYY.MM.DD hh:mm'
     });
 	
+	$('.datepicker').datetimepicker();
 
 	$.fn.serializefiles = function() {
 		var obj = $(this);

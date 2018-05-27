@@ -40,7 +40,7 @@
 
 	function save($row = null) { 
 		$this->parse = P_JSON;
-		$data = post('form'); 
+		$data = post('form'); print_r($data);
 		$this->cache($data, "settings_data");
 		return [
 			'message' => T('saved'), 

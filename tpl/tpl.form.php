@@ -3,6 +3,7 @@ if(!isset($script)) $script = true;
 if(!isset($prefix)) $prefix = 'form';
 if(!isset($plain)) $plain = false;
 if(!isset($table)) $table = true;
+if(!isset($btn)) $btn = true;
 if($plain) { ?>
 	<div class='tr'<?php if(isset($rowid)) echo " data-rowid='" . $rowid . "'";?>>
 <?php }
@@ -51,8 +52,9 @@ foreach($fields as $key => $field) {
 							role="tabpanel" aria-labelledby="tabpane_<?php echo $tabname;?>">
 							<?php echo form([
 								'fields' => $child,
-								'data' => $value,
+								'data' => $data,
 								'script' => false,
+								'btn' => false,
 							]); ?>
 					  	</div>					  	
 						<?php $first=false;  } ?>
@@ -70,7 +72,8 @@ foreach($fields as $key => $field) {
 						<?php echo form([
 							'fields' => $field['children'],
 							'data' => $value,
-							'prefix' => $_prefix,
+							'prefix' => $_prefix,							
+							'btn' => false,
 						]); ?>
 						</table>
 					</fieldset></td>
@@ -419,6 +422,19 @@ foreach($fields as $key => $field) {
 				<?php } ?>
 				</select>
 			<?php break;
+
+			case WIDGET_DATE:
+			case WIDGET_TIME:
+			case WIDGET_DATETIME: ?>
+				<div class="input-group date" id="<?php echo $key;?>" data-target-input="nearest">
+					 <input type="text" class="form-control datetimepicker-input" data-target="#<?php echo $key;?>"/>
+                    <div class="input-group-append" data-target="#<?php echo $key;?>" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+			<?php break;
+
+			 /*
 			case WIDGET_DATE:
 				preg_match_all("/[[:digit:]]{2,4}/", $value, $matches);
 				$nums = $matches[0]; ?>
@@ -454,7 +470,7 @@ foreach($fields as $key => $field) {
                     </div>
                 </div>
             </div>
-			<?php break;
+			<?php break; */
 
 			case WIDGET_CHECKBOXES:
 				$i = 0;
@@ -486,3 +502,9 @@ if($plain) { ?>
 	</div>
 </div>
 <?php } elseif($table) { echo "</table>"; }   ?>
+<?php if($btn) { ?>
+<div class="">
+	<div class="btn btn-primary submit"><?php echo T('save');?></div>
+	<div class="messages"></div>
+</div>
+<?php } ?>
